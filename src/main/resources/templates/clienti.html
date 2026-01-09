@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestiune Clienți</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .error {
+            color: #e74c3c;
+            font-size: 0.9em;
+            display: block;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{nav :: nav}"></div>
+
+<div class="main-content">
+    <h1>Gestiune Clienți</h1>
+
+    <div class="form-container">
+        <h3>Adaugă Client Nou</h3>
+
+        <form action="/clienti/adauga" method="post" th:object="${clientNou}">
+
+            <label>Nume:</label>
+            <input type="text" th:field="*{nume}">
+            <span th:if="${#fields.hasErrors('nume')}" th:errors="*{nume}" class="error"></span>
+
+            <label>Prenume:</label>
+            <input type="text" th:field="*{prenume}">
+            <span th:if="${#fields.hasErrors('prenume')}" th:errors="*{prenume}" class="error"></span>
+
+            <label>Telefon (07xxxxxxxx):</label>
+            <input type="text" th:field="*{telefon}">
+            <span th:if="${#fields.hasErrors('telefon')}" th:errors="*{telefon}" class="error"></span>
+
+            <label>Email:</label>
+            <input type="text" th:field="*{email}">
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
+
+            <label>Adresa:</label>
+            <input type="text" th:field="*{adresa}">
+            <span th:if="${#fields.hasErrors('adresa')}" th:errors="*{adresa}" class="error"></span>
+
+            <button type="submit">Salvează Client</button>
+        </form>
+    </div>
+
+    <div style="margin-bottom: 20px; text-align: right;">
+        <form action="/clienti" method="get">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="Caută după nume, telefon..." style="width: 300px; display: inline-block;">
+            <button type="submit" style="padding: 10px 15px;">Caută</button>
+            <a href="/clienti" class="btn-cancel" style="margin-left: 5px;">Reset</a>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nume</th>
+            <th>Prenume</th>
+            <th>Telefon</th>
+            <th>Email</th>
+            <th>Adresa</th>
+            <th>Acțiuni</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="client : ${listaClienti}">
+            <td th:text="${client.clientID}"></td>
+            <td th:text="${client.nume}"></td>
+            <td th:text="${client.prenume}"></td>
+            <td th:text="${client.telefon}"></td>
+            <td th:text="${client.email}"></td>
+            <td th:text="${client.adresa}"></td>
+            <td>
+                <a th:href="@{/clienti/editeaza/{id}(id=${client.clientID})}" class="btn-edit">Modifică</a>
+                <a th:href="@{/clienti/sterge/{id}(id=${client.clientID})}" class="btn-delete"
+                   onclick="return confirm('Sigur vrei să ștergi acest client?');">Șterge</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

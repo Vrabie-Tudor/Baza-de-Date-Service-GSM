@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestiune Dispozitive</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{nav :: nav}"></div>
+
+<div class="main-content">
+    <h1>Gestiune Dispozitive</h1>
+
+    <div class="form-container">
+        <h3>Adaugă Dispozitiv Nou</h3>
+        <form action="/dispozitive/adauga" method="post">
+            <div style="display: flex; gap: 20px;">
+                <div style="flex: 1;">
+                    <label>Tip Dispozitiv (ex: Telefon):</label>
+                    <input type="text" name="tipDispozitiv" required>
+
+                    <label>Producator:</label>
+                    <input type="text" name="producator" required>
+
+                    <label>Model:</label>
+                    <input type="text" name="model">
+                </div>
+                <div style="flex: 1;">
+                    <label>Serie:</label>
+                    <input type="text" name="serie">
+
+                    <label>Stare (ex: Defect):</label>
+                    <input type="text" name="stare">
+
+                    <label>Client:</label>
+                    <select name="clientID" required>
+                        <option value="" disabled selected>-- Selectează un client --</option>
+                        <option th:each="client : ${listaClienti}"
+                                th:value="${client.clientID}"
+                                th:text="${client.nume + ' ' + client.prenume}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit">Salvează Dispozitiv</button>
+        </form>
+    </div>
+
+    <div style="margin-bottom: 20px; text-align: right;">
+        <form action="/dispozitive" method="get">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="Caută după tip, producător, serie..." style="width: 300px; display: inline-block;">
+            <button type="submit" style="padding: 10px 15px;">Caută</button>
+            <a href="/dispozitive" class="btn-cancel" style="margin-left: 5px;">Reset</a>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tip</th>
+            <th>Producator</th>
+            <th>Model</th>
+            <th>Serie</th>
+            <th>Stare</th>
+            <th>Proprietar</th>
+            <th>Acțiuni</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="disp : ${listaDispozitive}">
+            <td th:text="${disp.dispozitivID}"></td>
+            <td th:text="${disp.tipDispozitiv}"></td>
+            <td th:text="${disp.producator}"></td>
+            <td th:text="${disp.model}"></td>
+            <td th:text="${disp.serie}"></td>
+            <td th:text="${disp.stare}"></td>
+            <td th:text="${disp.client != null} ? ${disp.client.nume + ' ' + disp.client.prenume} : 'Fara Client'"></td>
+            <td>
+                <a th:href="@{/dispozitive/editeaza/{id}(id=${disp.dispozitivID})}" class="btn-edit">Modifică</a>
+                <a th:href="@{/dispozitive/sterge/{id}(id=${disp.dispozitivID})}" class="btn-delete"
+                   onclick="return confirm('Sigur vrei să ștergi acest dispozitiv?');">Șterge</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

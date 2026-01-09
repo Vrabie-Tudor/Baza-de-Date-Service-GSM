@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestiune Angajați</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{nav :: nav}"></div>
+
+<div class="main-content">
+    <h1>Gestiune Angajați</h1>
+
+    <div class="form-container">
+        <h3>Adaugă Angajat Nou</h3>
+        <form action="/angajati/adauga" method="post">
+            <label>Nume:</label> <input type="text" name="nume" required>
+            <label>Prenume:</label> <input type="text" name="prenume" required>
+            <label>Funcție:</label> <input type="text" name="functie" placeholder="ex: Tehnician">
+            <label>Telefon:</label> <input type="text" name="telefon">
+            <label>Email:</label> <input type="text" name="email">
+            <label>Data Angajării:</label> <input type="date" name="dataAngajare" required>
+            <button type="submit">Salvează Angajat</button>
+        </form>
+    </div>
+
+    <div style="margin-bottom: 20px; text-align: right;">
+        <form action="/angajati" method="get">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="Caută după nume, funcție..." style="width: 300px; display: inline-block;">
+            <button type="submit" style="padding: 10px 15px;">Caută</button>
+            <a href="/angajati" class="btn-cancel" style="margin-left: 5px;">Reset</a>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nume</th>
+            <th>Prenume</th>
+            <th>Funcție</th>
+            <th>Telefon</th>
+            <th>Email</th>
+            <th>Data Angajării</th>
+            <th>Acțiuni</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ang : ${listaAngajati}">
+            <td th:text="${ang.angajatID}"></td>
+            <td th:text="${ang.nume}"></td>
+            <td th:text="${ang.prenume}"></td>
+            <td th:text="${ang.functie}"></td>
+            <td th:text="${ang.telefon}"></td>
+            <td th:text="${ang.email}"></td>
+            <td th:text="${ang.dataAngajare}"></td>
+            <td>
+                <a th:href="@{/angajati/editeaza/{id}(id=${ang.angajatID})}" class="btn-edit">Modifică</a>
+                <a th:href="@{/angajati/sterge/{id}(id=${ang.angajatID})}" class="btn-delete"
+                   onclick="return confirm('Sigur vrei să ștergi acest angajat?');">Șterge</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

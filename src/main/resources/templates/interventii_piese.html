@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Piese utilizate în Intervenții</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{nav :: nav}"></div>
+
+<div class="main-content">
+    <h1>Asociere Piese - Intervenții</h1>
+
+    <div class="form-container">
+        <h3>Adaugă Piesă la Intervenție</h3>
+        <form action="/interventii-piese/adauga" method="post">
+            <div style="display: flex; gap: 20px;">
+                <div style="flex: 2;">
+                    <label>Alege Intervenția:</label>
+                    <select name="interventieID" required>
+                        <option th:each="i : ${listaInterventii}"
+                                th:value="${i.interventieID}"
+                                th:text="${'ID:' + i.interventieID + ' - ' + i.descriereProblema}">
+                        </option>
+                    </select>
+                </div>
+                <div style="flex: 2;">
+                    <label>Alege Piesa:</label>
+                    <select name="piesaID" required>
+                        <option th:each="p : ${listaPiese}"
+                                th:value="${p.piesaID}"
+                                th:text="${p.denumire + ' (Stoc: ' + p.stoc + ')'}">
+                        </option>
+                    </select>
+                </div>
+                <div style="flex: 1;">
+                    <label>Cantitate:</label>
+                    <input type="number" name="cantitate" value="1" min="1" required>
+                </div>
+            </div>
+            <button type="submit">Adaugă</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Intervenție</th>
+            <th>Piesă Utilizată</th>
+            <th>Cantitate</th>
+            <th>Cost Total (Preț * Cant)</th>
+            <th>Acțiuni</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ip : ${listaAsocieri}">
+            <td th:text="${ip.interventie.descriereProblema}"></td>
+            <td th:text="${ip.piesa.denumire}"></td>
+            <td th:text="${ip.cantitate}"></td>
+            <td th:text="${ip.costTotal} + ' RON'"></td>
+            <td>
+                <a th:href="@{/interventii-piese/sterge(interventieID=${ip.id.interventieID}, piesaID=${ip.id.piesaID})}"
+                   class="btn-delete"
+                   onclick="return confirm('Ștergi această piesă de la intervenție?');">
+                    Șterge
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

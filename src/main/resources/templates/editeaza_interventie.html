@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Modifică Intervenție</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{nav :: nav}"></div>
+
+<div class="main-content">
+    <div class="form-container" style="max-width: 800px; margin: auto;">
+        <h2>Modificare Intervenție</h2>
+        <form action="/interventii/modifica" method="post">
+            <input type="hidden" name="interventieID" th:value="${interventieDeEditat.interventieID}">
+
+            <div style="display: flex; gap: 20px;">
+                <div style="flex: 1;">
+                    <label>Dispozitiv:</label>
+                    <select name="dispozitivID" required>
+                        <option th:each="d : ${listaDispozitive}"
+                                th:value="${d.dispozitivID}"
+                                th:text="${d.tipDispozitiv + ' ' + d.producator + ' - ' + (d.client != null ? d.client.nume : 'Fara client')}"
+                                th:selected="${interventieDeEditat.dispozitiv != null and d.dispozitivID == interventieDeEditat.dispozitiv.dispozitivID}">
+                        </option>
+                    </select>
+
+                    <label>Angajat:</label>
+                    <select name="angajatID" required>
+                        <option th:each="a : ${listaAngajati}"
+                                th:value="${a.angajatID}"
+                                th:text="${a.nume + ' ' + a.prenume}"
+                                th:selected="${interventieDeEditat.angajat != null and a.angajatID == interventieDeEditat.angajat.angajatID}">
+                        </option>
+                    </select>
+
+                    <label>Descriere Problemă:</label>
+                    <input type="text" name="descriereProblema" th:value="${interventieDeEditat.descriereProblema}" required>
+
+                    <label>Soluție Aplicată:</label>
+                    <input type="text" name="solutieAplicata" th:value="${interventieDeEditat.solutieAplicata}">
+                </div>
+
+                <div style="flex: 1;">
+                    <label>Cost Manoperă (RON):</label>
+                    <input type="number" step="0.01" name="costManopera" th:value="${interventieDeEditat.costManopera}" required>
+
+                    <label>Status:</label>
+                    <select name="status" required>
+                        <option value="In Asteptare" th:selected="${interventieDeEditat.status == 'In Asteptare'}"> - (Nepreluat) </option>
+                        <option value="In Lucru" th:selected="${interventieDeEditat.status == 'In Lucru'}">In Lucru</option>
+                        <option value="Asteapta Piese" th:selected="${interventieDeEditat.status == 'Asteapta Piese'}">Asteapta Piese</option>
+                        <option value="Finalizata" th:selected="${interventieDeEditat.status == 'Finalizata'}">Finalizata</option>
+                    </select>
+
+                    <label>Data Start:</label>
+                    <input type="date" name="dataStart" th:value="${interventieDeEditat.dataStart}" required>
+                    <label>Data Finalizare:</label>
+                    <input type="date" name="dataFinalizare" th:value="${interventieDeEditat.dataFinalizare}">
+                </div>
+            </div>
+
+            <br>
+            <button type="submit">Salvează Modificările</button>
+            <a href="/interventii" class="btn-cancel">Anulează</a>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

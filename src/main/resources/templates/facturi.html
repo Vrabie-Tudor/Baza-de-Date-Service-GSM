@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestiune Facturi</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{nav :: nav}"></div>
+
+<div class="main-content">
+    <h1>Facturi Emise</h1>
+
+    <div class="form-container">
+        <h3>Generează Factură Nouă</h3>
+        <p style="font-size: 0.9em; color: #666;">Se va calcula automat: Cost Manoperă + Cost Piese</p>
+
+        <form action="/facturi/genereaza" method="post">
+            <label>Alege Intervenția (Client - Dispozitiv):</label>
+            <select name="interventieID" required>
+                <option th:each="i : ${listaInterventii}"
+                        th:value="${i.interventieID}"
+                        th:text="${'ID:' + i.interventieID + ' | ' + (i.dispozitiv.client.nume) + ' - ' + i.descriereProblema + ' (' + i.status + ')'}">
+                </option>
+            </select>
+            <button type="submit" style="background-color: #27ae60;">Generează Factură</button>
+        </form>
+    </div>
+
+    <div style="margin-bottom: 20px; text-align: right;">
+        <form action="/facturi" method="get">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="Caută după client..." style="width: 300px; display: inline-block;">
+            <button type="submit" style="padding: 10px 15px;">Caută</button>
+            <a href="/facturi" class="btn-cancel" style="margin-left: 5px;">Reset</a>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Client</th>
+            <th>Intervenție (Problemă)</th>
+            <th>Data Emitere</th>
+            <th>Total (RON)</th>
+            <th>Profit</th>
+            <th>Acțiuni</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="f : ${listaFacturi}">
+            <td th:text="${f.facturaID}"></td>
+            <td th:text="${f.client.nume + ' ' + f.client.prenume}"></td>
+            <td th:text="${'#' + f.interventie.interventieID + ' - ' + f.interventie.descriereProblema}"></td>
+            <td th:text="${f.dataEmitere}"></td>
+            <td th:text="${f.sumaTotala}" style="font-weight: bold; color: #2980b9;"></td>
+            <td th:text="${f.profit}"></td>
+            <td>
+                <a th:href="@{/facturi/sterge/{id}(id=${f.facturaID})}" class="btn-delete"
+                   onclick="return confirm('Sigur vrei să anulezi această factură?');">Anulează</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

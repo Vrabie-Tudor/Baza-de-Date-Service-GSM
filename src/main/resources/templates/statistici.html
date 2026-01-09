@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Statistici Service</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h3 { border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-top: 0; color: #2c3e50; }
+        ul { list-style-type: none; padding: 0; }
+        li { padding: 5px 0; border-bottom: 1px solid #eee; }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{nav :: nav}"></div>
+
+<div class="main-content">
+    <h1>Rapoarte și Statistici</h1>
+
+    <div class="stats-grid">
+        <div class="card">
+            <h3>1. Clienți cu Dispozitive Defecte</h3>
+            <p><i>(Subcerere WHERE IN)</i></p>
+            <ul>
+                <li th:each="item : ${clientiDefecti}" th:text="${item}"></li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>2. Angajați Top Manoperă (Peste Medie)</h3>
+            <p><i>(Subcerere cu AVG)</i></p>
+            <ul>
+                <li th:each="item : ${angajatiTop}" th:text="${item}"></li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>3. Piese Stoc Critic (Sub Medie)</h3>
+            <p><i>(Subcerere cu AVG)</i></p>
+            <ul>
+                <li th:each="item : ${pieseCritice}" th:text="${item}"></li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>4. Cel Mai Scump Dispozitiv Reparat</h3>
+            <p><i>(Subcerere TOP 1)</i></p>
+            <ul>
+                <li th:each="item : ${dispozitivScump}" th:text="${item}"></li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>5. Venituri per Angajat</h3>
+            <p><i>(JOIN + GROUP BY)</i></p>
+            <ul>
+                <li th:each="row : ${venituriAngajati}" th:text="${row[0] + ': ' + row[1] + ' RON'}"></li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>6. Intervenții per Brand</h3>
+            <p><i>(JOIN + COUNT)</i></p>
+            <ul>
+                <li th:each="row : ${interventiiBrand}" th:text="${row[0] + ': ' + row[1] + ' buc'}"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

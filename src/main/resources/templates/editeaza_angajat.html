@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Modifică Angajat</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{nav :: nav}"></div>
+
+<div class="main-content">
+    <div class="form-container" style="max-width: 600px; margin: auto;">
+        <h2>Modificare Angajat</h2>
+        <form action="/angajati/modifica" method="post">
+            <input type="hidden" name="angajatID" th:value="${angajatDeEditat.angajatID}">
+
+            <label>Nume:</label> <input type="text" name="nume" th:value="${angajatDeEditat.nume}" required>
+            <label>Prenume:</label> <input type="text" name="prenume" th:value="${angajatDeEditat.prenume}" required>
+            <label>Funcție:</label> <input type="text" name="functie" th:value="${angajatDeEditat.functie}">
+            <label>Telefon:</label> <input type="text" name="telefon" th:value="${angajatDeEditat.telefon}">
+            <label>Email:</label> <input type="text" name="email" th:value="${angajatDeEditat.email}">
+            <label>Data Angajării:</label> <input type="date" name="dataAngajare" th:value="${angajatDeEditat.dataAngajare}">
+
+            <br><br>
+            <button type="submit">Salvează Modificările</button>
+            <a href="/angajati" class="btn-cancel">Anulează</a>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

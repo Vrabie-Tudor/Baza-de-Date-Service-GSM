@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestiune Piese</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{nav :: nav}"></div>
+
+<div class="main-content">
+    <h1>Gestiune Piese</h1>
+
+    <div class="form-container">
+        <h3>Adaugă Piesă Nouă</h3>
+        <form action="/piese/adauga" method="post">
+            <label>Denumire:</label> <input type="text" name="denumire" required>
+            <label>Producător:</label> <input type="text" name="producator">
+            <label>Stoc:</label> <input type="number" name="stoc" required>
+            <label>Preț (RON):</label> <input type="number" step="0.01" name="pret" required>
+            <button type="submit">Salvează Piesă</button>
+        </form>
+    </div>
+
+    <div style="margin-bottom: 20px; text-align: right;">
+        <form action="/piese" method="get">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="Caută după denumire, producător..." style="width: 300px; display: inline-block;">
+            <button type="submit" style="padding: 10px 15px;">Caută</button>
+            <a href="/piese" class="btn-cancel" style="margin-left: 5px;">Reset</a>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Denumire</th>
+            <th>Producător</th>
+            <th>Stoc</th>
+            <th>Preț</th>
+            <th>Acțiuni</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${listaPiese}">
+            <td th:text="${p.piesaID}"></td>
+            <td th:text="${p.denumire}"></td>
+            <td th:text="${p.producator}"></td>
+            <td th:text="${p.stoc}"></td>
+            <td th:text="${p.pret}"></td>
+            <td>
+                <a th:href="@{/piese/editeaza/{id}(id=${p.piesaID})}" class="btn-edit">Modifică</a>
+                <a th:href="@{/piese/sterge/{id}(id=${p.piesaID})}" class="btn-delete" onclick="return confirm('Sigur?');">Șterge</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

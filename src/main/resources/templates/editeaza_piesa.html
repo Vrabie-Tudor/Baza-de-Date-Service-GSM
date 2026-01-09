@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Modifică Piesă</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{nav :: nav}"></div>
+
+<div class="main-content">
+    <div class="form-container" style="max-width: 600px; margin: auto;">
+        <h2>Modificare Piesă</h2>
+        <form action="/piese/modifica" method="post">
+            <input type="hidden" name="piesaID" th:value="${piesaDeEditat.piesaID}">
+
+            <label>Denumire:</label> <input type="text" name="denumire" th:value="${piesaDeEditat.denumire}" required>
+            <label>Producător:</label> <input type="text" name="producator" th:value="${piesaDeEditat.producator}">
+            <label>Stoc:</label> <input type="number" name="stoc" th:value="${piesaDeEditat.stoc}" required>
+            <label>Preț (RON):</label> <input type="number" step="0.01" name="pret" th:value="${piesaDeEditat.pret}" required>
+
+            <br><br>
+            <button type="submit">Salvează Modificările</button>
+            <a href="/piese" class="btn-cancel">Anulează</a>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

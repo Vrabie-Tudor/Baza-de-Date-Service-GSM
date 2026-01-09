@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestiune Intervenții</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{nav :: nav}"></div>
+
+<div class="main-content">
+    <h1>Gestiune Intervenții</h1>
+
+    <div class="form-container">
+        <h3>Adaugă Intervenție Nouă</h3>
+        <form action="/interventii/adauga" method="post">
+            <div style="display: flex; gap: 20px;">
+                <div style="flex: 1;">
+                    <label>Dispozitiv:</label>
+                    <select name="dispozitivID" required>
+                        <option th:each="d : ${listaDispozitive}"
+                                th:value="${d.dispozitivID}"
+                                th:text="${d.tipDispozitiv + ' ' + d.producator + ' - ' + (d.client != null ? d.client.nume : 'Fara client')}">
+                        </option>
+                    </select>
+
+                    <label>Angajat (Tehnician):</label>
+                    <select name="angajatID" required>
+                        <option th:each="a : ${listaAngajati}"
+                                th:value="${a.angajatID}"
+                                th:text="${a.nume + ' ' + a.prenume}">
+                        </option>
+                    </select>
+
+                    <label>Descriere Problemă:</label>
+                    <input type="text" name="descriereProblema" required>
+
+                    <label>Soluție Aplicată:</label>
+                    <input type="text" name="solutieAplicata">
+                </div>
+
+                <div style="flex: 1;">
+                    <label>Cost Manoperă (RON):</label>
+                    <input type="number" step="0.01" name="costManopera" required>
+
+                    <label>Status:</label>
+                    <select name="status" required>
+                        <option value="In Asteptare"> - (Nepreluat) </option>
+                        <option value="In Lucru" selected>In Lucru</option>
+                        <option value="Asteapta Piese">Asteapta Piese</option>
+                        <option value="Finalizata">Finalizata</option>
+                    </select>
+
+                    <label>Data Start:</label>
+                    <input type="date" name="dataStart" required>
+                    <label>Data Finalizare:</label>
+                    <input type="date" name="dataFinalizare">
+                </div>
+            </div>
+            <button type="submit">Salvează Intervenție</button>
+        </form>
+    </div>
+
+    <div style="margin-bottom: 20px; text-align: right;">
+        <form action="/interventii" method="get">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="Caută după problemă, status..." style="width: 300px; display: inline-block;">
+            <button type="submit" style="padding: 10px 15px;">Caută</button>
+            <a href="/interventii" class="btn-cancel" style="margin-left: 5px;">Reset</a>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Dispozitiv</th>
+            <th>Angajat</th>
+            <th>Problemă</th>
+            <th>Soluție</th>
+            <th>Cost</th>
+            <th>Status</th>
+            <th>Start</th>
+            <th>Final</th>
+            <th>Acțiuni</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="i : ${listaInterventii}">
+            <td th:text="${i.interventieID}"></td>
+            <td th:text="${i.dispozitiv != null} ? ${i.dispozitiv.tipDispozitiv + ' ' + i.dispozitiv.producator} : '-'"></td>
+            <td th:text="${i.angajat != null} ? ${i.angajat.nume + ' ' + i.angajat.prenume} : '-'"></td>
+            <td th:text="${i.descriereProblema}"></td>
+            <td th:text="${i.solutieAplicata}"></td>
+            <td th:text="${i.costManopera}"></td>
+            <td th:text="${i.status}"></td>
+            <td th:text="${i.dataStart}"></td>
+            <td th:text="${i.dataFinalizare}"></td>
+            <td>
+                <a th:href="@{/interventii/editeaza/{id}(id=${i.interventieID})}" class="btn-edit">Modifică</a>
+                <a th:href="@{/interventii/sterge/{id}(id=${i.interventieID})}" class="btn-delete" onclick="return confirm('Sigur?');">Șterge</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

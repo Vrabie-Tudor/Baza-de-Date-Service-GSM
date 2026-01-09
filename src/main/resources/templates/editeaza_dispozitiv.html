@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Modifică Dispozitiv</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{nav :: nav}"></div>
+
+<div class="main-content">
+    <div class="form-container" style="max-width: 600px; margin: auto;">
+        <h2>Modificare Dispozitiv</h2>
+        <form action="/dispozitive/modifica" method="post">
+            <input type="hidden" name="dispozitivID" th:value="${dispozitivDeEditat.dispozitivID}">
+
+            <label>Tip Dispozitiv:</label>
+            <input type="text" name="tipDispozitiv" th:value="${dispozitivDeEditat.tipDispozitiv}" required>
+
+            <label>Producator:</label>
+            <input type="text" name="producator" th:value="${dispozitivDeEditat.producator}" required>
+
+            <label>Model:</label>
+            <input type="text" name="model" th:value="${dispozitivDeEditat.model}">
+
+            <label>Serie:</label>
+            <input type="text" name="serie" th:value="${dispozitivDeEditat.serie}">
+
+            <label>Stare:</label>
+            <input type="text" name="stare" th:value="${dispozitivDeEditat.stare}">
+
+            <label>Proprietar:</label>
+            <select name="clientID" required>
+                <option th:each="client : ${listaClienti}"
+                        th:value="${client.clientID}"
+                        th:text="${client.nume + ' ' + client.prenume}"
+                        th:selected="${dispozitivDeEditat.client != null and client.clientID == dispozitivDeEditat.client.clientID}">
+                </option>
+            </select>
+
+            <br><br>
+            <button type="submit">Salvează Modificările</button>
+            <a href="/dispozitive" class="btn-cancel">Anulează</a>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
